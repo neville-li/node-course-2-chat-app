@@ -22,19 +22,19 @@ io.on("connection", (socket) => {
     //broadcast message to other clients except for the joining client
     socket.broadcast.emit("newMessage", generateMessage("Admin", "New user joined"));
 
-    socket.on("createMessage", (message) => {
+    socket.on("createMessage", (message, callback) => {
         console.log("create Message",message);
-
+     
         //broadcast to every to every connection(clients and servers) including the request sender
         io.emit("newMessage", generateMessage(message.from, message.text));
-
+        
         // socket.broadcast.emit("newMessage", {
         //     from: message.from,
         //     text: message.text,
         //     createdAt: new Date().getTime
         // });
 
-        
+        callback("This is from this server");
     });
 
     socket.on("disconnect", () => {
@@ -48,5 +48,5 @@ io.on("connection", (socket) => {
 
 
 server.listen(port, (req, res) => {
-    console.log("server started");
+    console.log("server started " + port);
 });
